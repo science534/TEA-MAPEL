@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mapel Astronomy</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Georgia, serif;
+    overflow:hidden;
+    background:#111;
+}
+
+.book{
+    display:flex;
+    width:100vw;
+    height:100vh;
+    transition:transform 0.5s ease;
+}
+
+.page{
+    min-width:100vw;
+    height:100vh;
+    overflow-y:auto;
+    padding:40px;
+    box-sizing:border-box;
+    background:#f5f1e8;
+    color:#222;
+}
+
+.cover{
+    background:url("https://images.unsplash.com/photo-1451187580459-43490279c0fa") center/cover;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    text-align:center;
+}
+
+img{
+    width:100%;
+    margin:15px 0;
+    border-radius:10px;
+}
+
+h2{
+    border-bottom:2px solid #333;
+}
+
+.footer{
+    position:fixed;
+    bottom:10px;
+    width:100%;
+    text-align:center;
+    font-size:14px;
+    color:white;
+}
+</style>
+</head>
+<body>
+
+<div class="book" id="book">
+
+<div class="page cover">
+    <h1>MAPEL ASTRONOMY</h1>
+    <p>Buku Pelajaran Astronomi</p>
+</div>
+
+</div>
+
+<div class="footer" id="pageNum"></div>
+
+<script>
+const book = document.getElementById("book");
+let currentPage = 0;
+
+const chapters = [
+{
+title:"Bab 1: Pengenalan Astronomi",
+img:"https://upload.wikimedia.org/wikipedia/commons/9/95/ESO_-_Milky_Way.jpg",
+text:"Astronomi adalah ilmu yang mempelajari benda langit dan fenomena kosmik."
+},
+{
+title:"Bab 2: Tata Surya",
+img:"https://upload.wikimedia.org/wikipedia/commons/c/c3/Solar_sys8.jpg",
+text:"Tata Surya terdiri dari Matahari dan planet-planet yang mengorbitnya."
+},
+{
+title:"Bab 3: Bintang",
+img:"https://upload.wikimedia.org/wikipedia/commons/4/4c/Sun_white.jpg",
+text:"Bintang adalah bola gas panas yang menghasilkan energi melalui fusi nuklir."
+},
+{
+title:"Bab 4: Galaksi",
+img:"https://upload.wikimedia.org/wikipedia/commons/5/5f/Andromeda_Galaxy_(with_h-alpha).jpg",
+text:"Galaksi adalah sistem besar yang terdiri dari bintang, gas dan debu."
+},
+{
+title:"Bab 5: Supernova",
+img:"https://upload.wikimedia.org/wikipedia/commons/5/5f/Crab_Nebula.jpg",
+text:"Supernova adalah ledakan besar dari bintang masif."
+},
+{
+title:"Bab 6: Lubang Hitam",
+img:"https://upload.wikimedia.org/wikipedia/commons/4/4f/Black_hole_-_Messier_87_crop_max_res.jpg",
+text:"Lubang hitam memiliki gravitasi sangat kuat hingga cahaya tidak bisa lolos."
+},
+{
+title:"Bab 7: Kosmologi",
+img:"https://upload.wikimedia.org/wikipedia/commons/3/3c/WMAP_2012.png",
+text:"Kosmologi mempelajari asal-usul dan evolusi alam semesta."
+},
+{
+title:"Bab 8: Eksplorasi Antariksa",
+img:"https://upload.wikimedia.org/wikipedia/commons/e/e5/Apollo_11_Launch_-_GPN-2000-000630.jpg",
+text:"Eksplorasi antariksa dilakukan untuk memahami luar angkasa lebih jauh."
+}
+];
+
+chapters.forEach(ch => {
+
+    // Halaman Materi
+    const materi = document.createElement("div");
+    materi.className="page";
+    materi.innerHTML = `
+        <h2>${ch.title}</h2>
+        <p>${ch.text}</p>
+        <img src="${ch.img}">
+        <p>Materi ini menjelaskan konsep penting dalam astronomi secara mendalam.</p>
+    `;
+    book.appendChild(materi);
+
+    // Halaman Soal (2 soal tiap bab)
+    const soal = document.createElement("div");
+    soal.className="page";
+    soal.innerHTML = `
+        <h2>${ch.title} - Latihan Soal</h2>
+        <ol>
+            <li>Jelaskan konsep utama dari ${ch.title}.</li>
+            <li>Mengapa materi ini penting dalam ilmu astronomi?</li>
+        </ol>
+    `;
+    book.appendChild(soal);
+
+});
+
+const totalPages = book.children.length;
+
+function updatePage(){
+    book.style.transform = `translateX(-${currentPage * 100}vw)`;
+    document.getElementById("pageNum").innerText =
+        `Halaman ${currentPage} dari ${totalPages-1}`;
+}
+
+updatePage();
+
+let startX=0;
+
+document.addEventListener("touchstart", e=>{
+    startX = e.touches[0].clientX;
+});
+
+document.addEventListener("touchend", e=>{
+    let endX = e.changedTouches[0].clientX;
+    if(startX - endX > 50 && currentPage < totalPages-1){
+        currentPage++;
+    }
+    else if(endX - startX > 50 && currentPage > 0){
+        currentPage--;
+    }
+    updatePage();
+});
+</script>
+
+</body>
+  </html>
